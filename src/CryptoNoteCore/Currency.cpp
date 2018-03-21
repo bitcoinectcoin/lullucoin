@@ -466,7 +466,12 @@ namespace CryptoNote {
 
 			// end of new difficulty calculation
 
-		} else {
+		} else if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+
+			// Switch to newest Zawy algorithm
+			return nextDifficulty_V2_Zawy2(blockMajorVersion, timestamps, cumulativeDifficulties);
+
+		else {
 
 			// old difficulty calculation
 
@@ -515,6 +520,69 @@ namespace CryptoNote {
 			// end of old difficulty calculation  
 		}
 
+	}
+
+	difficulty_type Currency::nextDifficulty_V2_Zawy2(uint8_t blockMajorVersion, std::vector<uint64_t> timestamps, std::vector<difficulty_type> cumulativeDifficulties) const {
+		// based on Zawy difficulty algorithm WHM https://github.com/alloyproject/alloy/blob/master/src/CryptoNoteCore/Currency.cpp
+
+		int T = m_difficultyTarget;
+		size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
+		assert(N >= 2);
+
+		sort(timestamps.begin(), timestamps.end());
+		sort(cumulativeDifficulties.begin(), cumulativeDifficulties.end());
+
+		if (timestamps.size() > N) {
+			timestamps.resize(N);
+			cumulativeDifficulties.resize(N);
+		}
+		size_t length = timestamps.size();
+		assert(length == cumulativeDifficulties.size());
+		assert(length <= N);
+		if (length <= 1) {
+			return 1;
+		}
+
+		uint64_t k = 0, w = 0;
+		int t = 0, j = 0, len = length;
+
+		const double_t adjust = pow(0.9989, 500 / T);
+		k = adjust * ((length + 1) / 2) * T;
+
+		for (int i = 1; i < len; i++) {
+			int solvetime;
+			solvetime = timestamps[i] - timestamps[i - 1];
+
+			if (solvetime > 10 * T) { solvetime = 10 * T; }
+			if (solvetime < -(5 * T)) { solvetime = -(5 * T); }
+
+			j = j + 1;
+			w += solvetime * j;
+			t += solvetime;
+		}
+
+		if (w < T * length / 2) {
+			w = T * length / 2;
+		}
+
+		difficulty_type totalWork = cumulativeDifficulties.back() - cumulativeDifficulties.front();
+		assert(totalWork > 0);
+		uint64_t low, high;
+		low = mul128(totalWork, k, &high);
+		if (high != 0) {
+			return 0;
+		}
+
+		uint64_t nextDiffZ = low / w;
+
+		if (nextDiffZ <= 1) {
+			nextDiffZ = 1;
+		}
+
+		//diags
+		//printf("WHM Diff Algo, Diff:%lu  TS size:%lu  CD size:%lu\n",nextDiffZ,timestamps.size(),cumulativeDifficulties.size());
+
+		return nextDiffZ;
 	}
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
