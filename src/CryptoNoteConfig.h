@@ -79,7 +79,8 @@ const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 
 const uint32_t UPGRADE_HEIGHT_V2                             = 40000;
 const uint32_t UPGRADE_HEIGHT_V3                             = 46000;
-const uint32_t UPGRADE_HEIGHT_V4                             = 60000;
+const uint32_t UPGRADE_HEIGHT_V4                             = 55792;
+
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t   UPGRADE_VOTING_WINDOW                       = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
 const uint32_t   UPGRADE_WINDOW                              = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -131,17 +132,12 @@ const uint32_t P2P_IP_BLOCKTIME                              = (60 * 60 * 24);//
 const uint32_t P2P_IP_FAILS_BEFORE_BLOCK                     = 10;
 const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (5 * 60);      //5 minutes
 
-const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "37ceebc436f3004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
+const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "47ceebc436f3004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
 
-const char* const SEED_NODES[] = { 
+const char* const SEED_NODES[] = {
   "node-00.qwertycoin.org:8196", //00
-  "195.201.25.118:8196",  //01
-  "node-02.qwertycoin.org:8196", //02
-  "78.47.85.215:8196", //03
-  "46.38.242.66:8196", //op
-  "78.47.87.215:8196", //04
-  "195.201.27.148:8196", //05
-  "94.16.122.128:8196"//nc
+  "195.201.118.201:8196",  //01
+  "195.201.118.202:8196"
 };
 
 struct CheckpointData {
