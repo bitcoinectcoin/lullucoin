@@ -323,6 +323,7 @@ m_current_block_cumul_sz_limit(0),
 m_is_in_checkpoint_zone(false),
 m_upgradeDetectorV2(currency, m_blocks, BLOCK_MAJOR_VERSION_2, logger),
 m_upgradeDetectorV3(currency, m_blocks, BLOCK_MAJOR_VERSION_3, logger),
+m_upgradeDetectorV4(currency, m_blocks, BLOCK_MAJOR_VERSION_4, logger),
 m_checkpoints(logger),
 m_paymentIdIndex(blockchainIndexesEnabled),
 m_timestampIndex(blockchainIndexesEnabled),
@@ -698,8 +699,11 @@ difficulty_type Blockchain::getDifficultyForNextBlock() {
   if (BlockMajorVersion == BLOCK_MAJOR_VERSION_2) {
    offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount2()));
   } 
-  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+  else if (BlockMajorVersion == BLOCK_MAJOR_VERSION_3) {
      //offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3()));
+     offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3() + 1));
+  }
+  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
      offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3() + 1));
   }
   else {
@@ -881,7 +885,48 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
     }
 
   }
-  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+  else if (BlockMajorVersion == BLOCK_MAJOR_VERSION_3) {
+
+    if (alt_chain.size() < m_currency.difficultyBlocksCount3()) {
+      std::lock_guard<decltype(m_blockchain_lock)> lk(m_blockchain_lock);
+      size_t main_chain_stop_offset = alt_chain.size() ? alt_chain.front()->second.height : bei.height;
+      size_t main_chain_count = m_currency.difficultyBlocksCount3() - std::min(m_currency.difficultyBlocksCount3(), alt_chain.size());
+      main_chain_count = std::min(main_chain_count, main_chain_stop_offset);
+      size_t main_chain_start_offset = main_chain_stop_offset - main_chain_count;
+
+      if (!main_chain_start_offset)
+        ++main_chain_start_offset; //skip genesis block
+      for (; main_chain_start_offset < main_chain_stop_offset; ++main_chain_start_offset) {
+        timestamps.push_back(m_blocks[main_chain_start_offset].bl.timestamp);
+        commulative_difficulties.push_back(m_blocks[main_chain_start_offset].cumulative_difficulty);
+      }
+
+      if (!((alt_chain.size() + timestamps.size()) <= m_currency.difficultyBlocksCount3())) {
+        logger(ERROR, BRIGHT_RED) << "Internal error, alt_chain.size()[" << alt_chain.size() << "] + timestamps.size()[" << timestamps.size() <<
+          "] NOT <= m_currency.difficultyBlocksCount()[" << m_currency.difficultyBlocksCount3() << ']'; return false;
+      }
+      for (auto it : alt_chain) {
+        timestamps.push_back(it->second.bl.timestamp);
+        commulative_difficulties.push_back(it->second.cumulative_difficulty);
+      }
+    }
+    else {
+      timestamps.resize(std::min(alt_chain.size(), m_currency.difficultyBlocksCount3()));
+      commulative_difficulties.resize(std::min(alt_chain.size(), m_currency.difficultyBlocksCount3()));
+      size_t count = 0;
+      size_t max_i = timestamps.size() - 1;
+      BOOST_REVERSE_FOREACH(auto it, alt_chain) {
+        timestamps[max_i - count] = it->second.bl.timestamp;
+        commulative_difficulties[max_i - count] = it->second.cumulative_difficulty;
+        count++;
+        if (count >= m_currency.difficultyBlocksCount3()) {
+          break;
+        }
+      }
+    }
+
+  }
+  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
 
     if (alt_chain.size() < m_currency.difficultyBlocksCount3()) {
       std::lock_guard<decltype(m_blockchain_lock)> lk(m_blockchain_lock);
