@@ -47,7 +47,6 @@ namespace {
       currencyBuilder.upgradeWindow(720);
       currencyBuilder.upgradeHeightV2(upgradeHeight);
       currencyBuilder.upgradeHeightV3(CryptoNote::UpgradeDetectorBase::UNDEF_HEIGHT);
-      currencyBuilder.upgradeHeightV4(CryptoNote::UpgradeDetectorBase::UNDEF_HEIGHT);
       return currencyBuilder.currency();
     }
 
