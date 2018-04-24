@@ -705,12 +705,9 @@ difficulty_type Blockchain::getDifficultyForNextBlock() {
   if (BlockMajorVersion == BLOCK_MAJOR_VERSION_2) {
    offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount2()));
   } 
-  else if (BlockMajorVersion == BLOCK_MAJOR_VERSION_3) {
+  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
      //offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3()));
      offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3() + 1));
-  }
-  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
-     offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount4() + 1));
   }
   else {
    offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount()));
@@ -932,7 +929,6 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
         }
       }
     }
-
   }
   else {
 

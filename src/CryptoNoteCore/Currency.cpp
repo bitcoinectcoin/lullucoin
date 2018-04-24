@@ -413,10 +413,7 @@ namespace CryptoNote {
 	difficulty_type Currency::nextDifficulty(uint8_t blockMajorVersion, std::vector<uint64_t> timestamps,
 		std::vector<difficulty_type> cumulativeDifficulties) const {
 
-		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
-			return nextDifficultyV3(timestamps, cumulativeDifficulties);
-		}
-		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_3) {
+		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
 			return nextDifficultyV3(timestamps, cumulativeDifficulties);
 		}
 		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
@@ -520,7 +517,7 @@ namespace CryptoNote {
 
 		// minimum limit
 		if (nextDiffZ < 100000) {
-			nextDiffZ = 10;
+			nextDiffZ = 100000;
 		}
 
 		return nextDiffZ;
