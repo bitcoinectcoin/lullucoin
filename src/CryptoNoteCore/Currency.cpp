@@ -520,7 +520,7 @@ namespace CryptoNote {
 
 		// minimum limit
 		if (nextDiffZ < 100000) {
-			nextDiffZ = 100000;
+			nextDiffZ = 10;
 		}
 
 		return nextDiffZ;
