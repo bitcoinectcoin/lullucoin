@@ -138,8 +138,9 @@ const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (5 * 60);      //
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "deadbeaf36f3004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
 
 const char* const SEED_NODES[] = { 
-  "node-00.qwertycoin.org:8196",//00
-
+  "195.201.118.201:8196",
+  "195.201.118.202:8196",
+  "46.38.242.66:8196"
 };
 
 struct CheckpointData {
