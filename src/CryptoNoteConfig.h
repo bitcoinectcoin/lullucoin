@@ -143,6 +143,7 @@ const char* const SEED_NODES[] = {
   "46.38.242.66:8196"
 };
 
+
 struct CheckpointData {
   uint32_t height;
   const char* blockId;
