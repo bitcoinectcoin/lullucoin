@@ -1763,6 +1763,7 @@ bool Blockchain::checkBlockVersion(const Block& b, const Crypto::Hash& blockHash
 }
 
 bool Blockchain::checkParentBlockSize(const Block& b, const Crypto::Hash& blockHash) {
+  
   if (b.majorVersion >= BLOCK_MAJOR_VERSION_2) {
     auto serializer = makeParentBlockSerializer(b, false, false);
     size_t parentBlockSize;
