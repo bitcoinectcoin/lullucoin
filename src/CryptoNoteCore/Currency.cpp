@@ -521,7 +521,7 @@ namespace CryptoNote {
 			nextDiffZ = 100000;
 		}
 
-		return nextDiffZ;
+		return 100; //nextDiffZ;
 	}
 
 	difficulty_type Currency::nextDifficultyV3(std::vector<uint64_t> timestamps,
@@ -581,7 +581,7 @@ namespace CryptoNote {
 			next_difficulty = 100000;
 		}
 
-		return next_difficulty;
+		return 1000; //next_difficulty;
 	}
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
