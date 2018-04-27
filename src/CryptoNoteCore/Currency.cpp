@@ -152,12 +152,16 @@ namespace CryptoNote {
 		// Tail emission
 
 		uint64_t baseReward = (m_moneySupply - alreadyGeneratedCoins) >> m_emissionSpeedFactor;
+
 		if (alreadyGeneratedCoins + CryptoNote::parameters::TAIL_EMISSION_REWARD >= m_moneySupply || baseReward < CryptoNote::parameters::TAIL_EMISSION_REWARD)
 		{
 			baseReward = CryptoNote::parameters::TAIL_EMISSION_REWARD;
 		}
 
-		size_t blockGrantedFullRewardZone = blockGrantedFullRewardZoneByBlockVersion(blockMajorVersion);
+		//size_t blockGrantedFullRewardZone = blockGrantedFullRewardZoneByBlockVersion(blockMajorVersion);
+
+		size_t blockGrantedFullRewardZone = (height < parameters::UPGRADE_HEIGHT_V4) ? parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 : blockGrantedFullRewardZoneByBlockVersion(blockMajorVersion);
+
 		medianSize = std::max(medianSize, blockGrantedFullRewardZone);
 		if (currentBlockSize > UINT64_C(2) * medianSize) {
 			logger(TRACE) << "Block cumulative size is too big: " << currentBlockSize << ", expected less than " << 2 * medianSize;

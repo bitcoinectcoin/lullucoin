@@ -1815,22 +1815,6 @@ bool Blockchain::getBlockCumulativeSize(const Block& block, size_t& cumulativeSi
 
 // Precondition: m_blockchain_lock is locked.
 bool Blockchain::update_next_comulative_size_limit() {
-  uint8_t nextBlockMajorVersion = getBlockMajorVersionForHeight(static_cast<uint32_t>(m_blocks.size()));
-  size_t nextBlockGrantedFullRewardZone = m_currency.blockGrantedFullRewardZoneByBlockVersion(nextBlockMajorVersion);
-
-  std::vector<size_t> sz;
-  get_last_n_blocks_sizes(sz, m_currency.rewardBlocksWindow());
-
-  uint64_t median = Common::medianValue(sz);
-  if (median <= nextBlockGrantedFullRewardZone) {
-    median = nextBlockGrantedFullRewardZone;
-  }
-
-  m_current_block_cumul_sz_limit = median * 2;
-  return true;
-}
-
-bool Blockchain::update_next_comulative_size_limit() {
   size_t blockGrantedFullRewardZone =
     getBlockMajorVersionForHeight(getCurrentBlockchainHeight()) < parameters::UPGRADE_HEIGHT_V4 ?
     parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 :
