@@ -323,6 +323,8 @@ m_current_block_cumul_sz_limit(0),
 m_is_in_checkpoint_zone(false),
 m_upgradeDetectorV2(currency, m_blocks, BLOCK_MAJOR_VERSION_2, logger),
 m_upgradeDetectorV3(currency, m_blocks, BLOCK_MAJOR_VERSION_3, logger),
+m_upgradeDetectorV4(currency, m_blocks, BLOCK_MAJOR_VERSION_4, logger),
+
 m_checkpoints(logger),
 m_paymentIdIndex(blockchainIndexesEnabled),
 m_timestampIndex(blockchainIndexesEnabled),
@@ -697,9 +699,12 @@ difficulty_type Blockchain::getDifficultyForNextBlock() {
   size_t offset;
   if (BlockMajorVersion == BLOCK_MAJOR_VERSION_2) {
    offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount2()));
-  } 
-  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+  }
+  else if (BlockMajorVersion == BLOCK_MAJOR_VERSION_3) {
      //offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3()));
+     offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3() + 1));
+  }
+  else if (BlockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
      offset = m_blocks.size() - std::min(m_blocks.size(), static_cast<uint64_t>(m_currency.difficultyBlocksCount3() + 1));
   }
   else {

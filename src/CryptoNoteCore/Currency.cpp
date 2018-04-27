@@ -114,7 +114,10 @@ namespace CryptoNote {
 	}
 
 	size_t Currency::blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const {
-		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
+			return CryptoNote::parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2;
+		}
+		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_3) {
 			return m_blockGrantedFullRewardZone;
 		}
 		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
@@ -131,6 +134,9 @@ namespace CryptoNote {
 		}
 		else if (majorVersion == BLOCK_MAJOR_VERSION_3) {
 			return m_upgradeHeightV3;
+		}
+		else if (majorVersion == BLOCK_MAJOR_VERSION_4) {
+			return m_upgradeHeightV4;
 		}
 		else {
 			return static_cast<uint32_t>(-1);
@@ -461,7 +467,7 @@ namespace CryptoNote {
 			return 0;
 		}
 
-		return (low + timeSpan - 1) / timeSpan;
+		return 10; //(low + timeSpan - 1) / timeSpan;
 	}
 
 	difficulty_type Currency::nextDifficultyV2(std::vector<uint64_t> timestamps,
@@ -498,7 +504,7 @@ namespace CryptoNote {
 		difficulty_type totalWork = cumulativeDifficulties.back() - cumulativeDifficulties.front();
 		assert(totalWork > 0);
 
-		// uint64_t nextDiffZ = totalWork * m_difficultyTarget / timeSpan; 
+		// uint64_t nextDiffZ = totalWork * m_difficultyTarget / timeSpan;
 
 		uint64_t low, high;
 		low = mul128(totalWork, m_difficultyTarget, &high);
@@ -514,7 +520,7 @@ namespace CryptoNote {
 			nextDiffZ = 100000;
 		}
 
-		return nextDiffZ;
+		return 20; //nextDiffZ;
 	}
 
 	difficulty_type Currency::nextDifficultyV3(std::vector<uint64_t> timestamps,
@@ -523,7 +529,7 @@ namespace CryptoNote {
 		// LWMA difficulty algorithm
 		// Copyright (c) 2017-2018 Zawy
 		// MIT license http://www.opensource.org/licenses/mit-license.php.
-		// This is an improved version of Tom Harding's (Deger8) "WT-144"  
+		// This is an improved version of Tom Harding's (Deger8) "WT-144"
 		// Karbowanec, Masari, Bitcoin Gold, and Bitcoin Cash have contributed.
 		// See https://github.com/zawy12/difficulty-algorithms/issues/1 for other algos.
 		// Do not use "if solvetime < 0 then solvetime = 1" which allows a catastrophic exploit.
@@ -568,13 +574,13 @@ namespace CryptoNote {
 		harmonic_mean_D = N / sum_inverse_D * adjust;
 		nextDifficulty = harmonic_mean_D * T / LWMA;
 		next_difficulty = static_cast<uint64_t>(nextDifficulty);
-		
+
 		// minimum limit
 		if (next_difficulty < 100000) {
 			next_difficulty = 100000;
 		}
 
-		return next_difficulty;
+		return 30; //next_difficulty;
 	}
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
@@ -638,6 +644,7 @@ namespace CryptoNote {
 
 		case BLOCK_MAJOR_VERSION_2:
 		case BLOCK_MAJOR_VERSION_3:
+		case BLOCK_MAJOR_VERSION_4:
 			return checkProofOfWorkV2(context, block, currentDiffic, proofOfWork);
 		}
 
@@ -713,6 +720,8 @@ namespace CryptoNote {
 
 		upgradeHeightV2(parameters::UPGRADE_HEIGHT_V2);
 		upgradeHeightV3(parameters::UPGRADE_HEIGHT_V3);
+		upgradeHeightV4(parameters::UPGRADE_HEIGHT_V4);
+
 		upgradeVotingThreshold(parameters::UPGRADE_VOTING_THRESHOLD);
 		upgradeVotingWindow(parameters::UPGRADE_VOTING_WINDOW);
 		upgradeWindow(parameters::UPGRADE_WINDOW);
