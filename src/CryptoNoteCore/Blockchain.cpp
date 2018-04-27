@@ -1830,24 +1830,6 @@ bool Blockchain::update_next_comulative_size_limit() {
   return true;
 }
 
-bool Blockchain::update_next_comulative_size_limit() {
-  size_t blockGrantedFullRewardZone =
-    getBlockMajorVersionForHeight(getCurrentBlockchainHeight()) < parameters::UPGRADE_HEIGHT_V4 ?
-    parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 :
-    m_currency.blockGrantedFullRewardZone();
-
-  std::vector<size_t> sz;
-  get_last_n_blocks_sizes(sz, m_currency.rewardBlocksWindow());
-
-  uint64_t median = Common::medianValue(sz);
-  if (median <= blockGrantedFullRewardZone) {
-    median = blockGrantedFullRewardZone;
-  }
-
-  m_current_block_cumul_sz_limit = median * 2;
-  return true;
-}
-
 bool Blockchain::addNewBlock(const Block& bl_, block_verification_context& bvc) {
   //copy block here to let modify block.target
   Block bl = bl_;
