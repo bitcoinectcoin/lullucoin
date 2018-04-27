@@ -49,6 +49,7 @@ MinerEvent BlockchainUpdatedEvent() {
 }
 
 void adjustMergeMiningTag(Block& blockTemplate) {
+  
   if (blockTemplate.majorVersion >= BLOCK_MAJOR_VERSION_2) {
     CryptoNote::TransactionExtraMergeMiningTag mmTag;
     mmTag.depth = 0;
