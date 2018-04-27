@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/qwertycoin-org/qwertycoin.svg?branch=master)](https://travis-ci.org/qwertycoin-org/qwertycoin)
 [![Build status](https://ci.appveyor.com/api/projects/status/yhiqfap4nfdommsb?svg=true)](https://ci.appveyor.com/project/qwertycoin-org/qwertycoin)
 
-### How To Compile TESTNET BRANCH!
+### How To Compile
 
 #### Ubuntu 16.04+ and MacOS 10.10+
 
