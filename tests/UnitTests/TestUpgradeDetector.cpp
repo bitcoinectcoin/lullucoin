@@ -46,7 +46,9 @@ namespace {
       currencyBuilder.upgradeVotingWindow(720);
       currencyBuilder.upgradeWindow(720);
       currencyBuilder.upgradeHeightV2(upgradeHeight);
-      currencyBuilder.upgradeHeightV3(CryptoNote::UpgradeDetectorBase::UNDEF_HEIGHT);
+      currencyBuilder.upgradeHeightV3(upgradeHeight);
+      currencyBuilder.upgradeHeightV4(upgradeHeight);
+      currencyBuilder.upgradeHeightV5(CryptoNote::UpgradeDetectorBase::UNDEF_HEIGHT);
       return currencyBuilder.currency();
     }
 
@@ -156,6 +158,7 @@ namespace {
     CryptoNote::Currency currency = createCurrency();
     const uint8_t BLOCK_V3 = BLOCK_MAJOR_VERSION_2 + 1;
     const uint8_t BLOCK_V4 = BLOCK_MAJOR_VERSION_2 + 2;
+    const uint8_t BLOCK_V5 = BLOCK_MAJOR_VERSION_2 + 3;
 
     BlockVector blocks;
 
@@ -180,6 +183,13 @@ namespace {
     // Upgrade to v4 is here
     createBlocks(blocks, 1, BLOCK_V4, BLOCK_MINOR_VERSION_0);
 
+    createBlocks(blocks, currency.upgradeVotingWindow() * currency.upgradeVotingThreshold() / 100, BLOCK_V4, BLOCK_MINOR_VERSION_1);
+    uint32_t votingCompleteHeigntV5 = blocks.size() - 1;
+    uint32_t upgradeHeightV5 = currency.calculateUpgradeHeight(votingCompleteHeigntV4);
+    createBlocks(blocks, upgradeHeightV5 - blocks.size(), BLOCK_V4, BLOCK_MINOR_VERSION_0);
+    // Upgrade to v5 is here
+    createBlocks(blocks, 1, BLOCK_V5, BLOCK_MINOR_VERSION_0);
+
     UpgradeDetector upgradeDetectorV2(currency, blocks, BLOCK_MAJOR_VERSION_2, logger);
     ASSERT_TRUE(upgradeDetectorV2.init());
     ASSERT_EQ(upgradeDetectorV2.votingCompleteHeight(), votingCompleteHeigntV2);
@@ -194,6 +204,11 @@ namespace {
     ASSERT_TRUE(upgradeDetectorV4.init());
     ASSERT_EQ(upgradeDetectorV4.votingCompleteHeight(), votingCompleteHeigntV4);
     ASSERT_EQ(upgradeDetectorV4.upgradeHeight(), upgradeHeightV4);
+
+    UpgradeDetector upgradeDetectorV5(currency, blocks, BLOCK_V5, logger);
+    ASSERT_TRUE(upgradeDetectorV5.init());
+    ASSERT_EQ(upgradeDetectorV5.votingCompleteHeight(), votingCompleteHeigntV4);
+    ASSERT_EQ(upgradeDetectorV5.upgradeHeight(), upgradeHeightV5);
   }
 
   TEST_F(UpgradeDetector_upgradeHeight_init, handlesEmptyBlockchain) {
