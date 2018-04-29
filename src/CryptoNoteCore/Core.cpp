@@ -409,15 +409,7 @@ bool core::get_block_template(Block& b, const AccountPublicAddress& adr, difficu
     if (b.majorVersion == BLOCK_MAJOR_VERSION_1) {
       b.minorVersion = m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_2) == UpgradeDetectorBase::UNDEF_HEIGHT ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
     }
-
-    if (b.majorVersion < BLOCK_MAJOR_VERSION_3) {
-      if (b.majorVersion == BLOCK_MAJOR_VERSION_1) {
-        b.minorVersion = m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_2) == UpgradeDetectorBase::UNDEF_HEIGHT ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
-      } else {
-        b.minorVersion = m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_3) == UpgradeDetectorBase::UNDEF_HEIGHT ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
-      }
-    } else {
-
+    else {
       b.minorVersion = BLOCK_MINOR_VERSION_0;
       b.parentBlock.majorVersion = BLOCK_MAJOR_VERSION_1;
       b.parentBlock.majorVersion = BLOCK_MINOR_VERSION_0;
