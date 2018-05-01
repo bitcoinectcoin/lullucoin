@@ -241,7 +241,7 @@ bool core::check_tx_mixin(const Transaction& tx) {
     assert(inputIndex < tx.signatures.size());
     if (txin.type() == typeid(KeyInput)) {
       uint64_t txMixin = boost::get<KeyInput>(txin).outputIndexes.size();
-      if (txMixin > m_currency.maxMixin) {
+      if (txMixin > m_currency.maxMixin()) {
         logger(ERROR) << "Transaction " << getObjectHash(tx) << " has too large mixIn count, rejected";
         return false;
       }
