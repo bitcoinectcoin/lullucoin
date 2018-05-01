@@ -74,12 +74,13 @@ namespace CryptoNote {
 
 		if (isTestnet()) {
 			m_upgradeHeightV2 = 0;
-			m_upgradeHeightV3 = static_cast<uint32_t>(-1);
+			m_upgradeHeightV3 = 1;
+			m_upgradeHeightV4 = static_cast<uint32_t>(-1);
 			m_blocksFileName = "testnet_" + m_blocksFileName;
 			m_blocksCacheFileName = "testnet_" + m_blocksCacheFileName;
 			m_blockIndexesFileName = "testnet_" + m_blockIndexesFileName;
 			m_txPoolFileName = "testnet_" + m_txPoolFileName;
-			m_blockchinIndicesFileName = "testnet_" + m_blockchinIndicesFileName;
+			m_blockchainIndicesFileName = "testnet_" + m_blockchainIndicesFileName;
 		}
 
 		return true;
@@ -467,7 +468,7 @@ namespace CryptoNote {
 			return 0;
 		}
 
-		return 10; //(low + timeSpan - 1) / timeSpan;
+		return (low + timeSpan - 1) / timeSpan;
 	}
 
 	difficulty_type Currency::nextDifficultyV2(std::vector<uint64_t> timestamps,
@@ -520,7 +521,7 @@ namespace CryptoNote {
 			nextDiffZ = 100000;
 		}
 
-		return 10; //nextDiffZ;
+		return nextDiffZ;
 	}
 
 	difficulty_type Currency::nextDifficultyV3(std::vector<uint64_t> timestamps,
@@ -580,7 +581,7 @@ namespace CryptoNote {
 			next_difficulty = 100000;
 		}
 
-		return 10; //next_difficulty;
+		return next_difficulty;
 	}
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
@@ -721,6 +722,7 @@ namespace CryptoNote {
 		upgradeHeightV2(parameters::UPGRADE_HEIGHT_V2);
 		upgradeHeightV3(parameters::UPGRADE_HEIGHT_V3);
 		upgradeHeightV4(parameters::UPGRADE_HEIGHT_V4);
+
 		upgradeVotingThreshold(parameters::UPGRADE_VOTING_THRESHOLD);
 		upgradeVotingWindow(parameters::UPGRADE_VOTING_WINDOW);
 		upgradeWindow(parameters::UPGRADE_WINDOW);
@@ -729,7 +731,7 @@ namespace CryptoNote {
 		blocksCacheFileName(parameters::CRYPTONOTE_BLOCKSCACHE_FILENAME);
 		blockIndexesFileName(parameters::CRYPTONOTE_BLOCKINDEXES_FILENAME);
 		txPoolFileName(parameters::CRYPTONOTE_POOLDATA_FILENAME);
-		blockchinIndicesFileName(parameters::CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME);
+		blockchainIndicesFileName(parameters::CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME);
 
 		testnet(false);
 	}

@@ -383,7 +383,7 @@ struct COMMAND_RPC_GETBLOCKTEMPLATE {
     uint32_t height;
     uint64_t reserved_offset;
     std::string blocktemplate_blob;
-//	std::string blockhashing_blob;
+	std::string blockhashing_blob;
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -391,7 +391,7 @@ struct COMMAND_RPC_GETBLOCKTEMPLATE {
       KV_MEMBER(height)
       KV_MEMBER(reserved_offset)
       KV_MEMBER(blocktemplate_blob)
-//	  KV_MEMBER(blockhashing_blob)
+	  KV_MEMBER(blockhashing_blob)
       KV_MEMBER(status)
     }
   };

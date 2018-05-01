@@ -474,7 +474,7 @@ bool Blockchain::init(const std::string& config_folder, bool load_existing) {
     rollbackBlockchainTo(lastValidCheckpointHeight);
   }
 
-  if (!m_upgradeDetectorV2.init() || !m_upgradeDetectorV3.init() || !m_upgradeDetectorV4.init()) {
+  if (!m_upgradeDetectorV2.init() || !m_upgradeDetectorV3.init()) {
     logger(ERROR, BRIGHT_RED) << "Failed to initialize upgrade detector";
     return false;
   }
@@ -725,6 +725,11 @@ difficulty_type Blockchain::getDifficultyForNextBlock() {
   return m_currency.nextDifficulty(BlockMajorVersion, timestamps, commulative_difficulties);
 }
 
+uint64_t Blockchain::getBlockTimestamp(uint32_t height) {
+  assert(height < m_blocks.size());
+  return m_blocks[height].bl.timestamp;
+}
+
 uint64_t Blockchain::getCoinsInCirculation() {
   std::lock_guard<decltype(m_blockchain_lock)> lk(m_blockchain_lock);
   if (m_blocks.empty()) {
@@ -934,6 +939,7 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
         }
       }
     }
+
   }
   else {
 
@@ -1703,7 +1709,11 @@ bool Blockchain::check_tx_input(const KeyInput& txin, const Crypto::Hash& tx_pre
     return true;
   }
 
-  return Crypto::check_ring_signature(tx_prefix_hash, txin.keyImage, output_keys, sig.data());
+  bool check_tx_ring_signature = Crypto::check_ring_signature(tx_prefix_hash, txin.keyImage, output_keys, sig.data());
+  if (!check_tx_ring_signature) {
+    logger(ERROR) << "Failed to check ring signature for keyImage: " << txin.keyImage;
+  }
+  return check_tx_ring_signature;
 }
 
 uint64_t Blockchain::get_adjusted_time() {
@@ -2460,7 +2470,7 @@ bool Blockchain::storeBlockchainIndices() {
   logger(INFO, BRIGHT_WHITE) << "Saving blockchain indices...";
   BlockchainIndicesSerializer ser(*this, getTailId(), logger.getLogger());
 
-  if (!storeToBinaryFile(ser, appendPath(m_config_folder, m_currency.blockchinIndicesFileName()))) {
+  if (!storeToBinaryFile(ser, appendPath(m_config_folder, m_currency.blockchainIndicesFileName()))) {
     logger(ERROR, BRIGHT_RED) << "Failed to save blockchain indices";
     return false;
   }
@@ -2474,7 +2484,7 @@ bool Blockchain::loadBlockchainIndices() {
   logger(INFO, BRIGHT_WHITE) << "Loading blockchain indices for BlockchainExplorer...";
   BlockchainIndicesSerializer loader(*this, get_block_hash(m_blocks.back().bl), logger.getLogger());
 
-  loadFromBinaryFile(loader, appendPath(m_config_folder, m_currency.blockchinIndicesFileName()));
+  loadFromBinaryFile(loader, appendPath(m_config_folder, m_currency.blockchainIndicesFileName()));
 
   if (!loader.loaded()) {
     logger(WARNING, BRIGHT_YELLOW) << "No actual blockchain indices for BlockchainExplorer found, rebuilding...";

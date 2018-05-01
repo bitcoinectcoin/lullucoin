@@ -146,9 +146,7 @@ WalletGreen::WalletGreen(System::Dispatcher& dispatcher, const Currency& currenc
   m_pendingBalance(0),
   m_transactionSoftLockTime(transactionSoftLockTime)
 {
-  // 1,000,000 / 4
   m_upperTransactionSizeLimit = parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 / 4 - m_currency.minerTxBlobReservedSize();
-  //m_upperTransactionSizeLimit = parameters::CRYPTONOTE_MAX_TX_SIZE / 100 - m_currency.minerTxBlobReservedSize();
   m_readyEvent.set();
 }
 

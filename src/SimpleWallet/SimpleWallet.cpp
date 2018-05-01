@@ -1168,8 +1168,9 @@ bool simple_wallet::init(const boost::program_options::variables_map& vm)
 			"**********************************************************************\n" <<
 			"Use \"help\" command to see the list of available commands.\n" <<
 			"**********************************************************************";
+
       if (command_line::has_arg(vm, arg_reset))
-        reset({});
+          reset({});
 	}
 
 	return true;

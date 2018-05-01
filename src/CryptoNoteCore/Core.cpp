@@ -24,6 +24,7 @@
 #include "../CryptoNoteConfig.h"
 #include "../Common/CommandLine.h"
 #include "../Common/Util.h"
+#include "../Common/Math.h"
 #include "../Common/StringTools.h"
 #include "../crypto/crypto.h"
 #include "../CryptoNoteProtocol/CryptoNoteProtocolDefinitions.h"
@@ -406,11 +407,17 @@ bool core::get_block_template(Block& b, const AccountPublicAddress& adr, difficu
     b.majorVersion = m_blockchain.getBlockMajorVersionForHeight(height);
 
     if (b.majorVersion == BLOCK_MAJOR_VERSION_1) {
+
       b.minorVersion = m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_2) == UpgradeDetectorBase::UNDEF_HEIGHT ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
     }
-    else if (b.majorVersion == BLOCK_MAJOR_VERSION_2) {
+    else if (b.majorVersion >= BLOCK_MAJOR_VERSION_2) {
 
-      if (m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_3) == UpgradeDetectorBase::UNDEF_HEIGHT) {
+      if (m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_4) == UpgradeDetectorBase::UNDEF_HEIGHT) {
+        
+        b.minorVersion = b.majorVersion == BLOCK_MAJOR_VERSION_3 ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
+      }
+      else if (m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_3) == UpgradeDetectorBase::UNDEF_HEIGHT) {
+
         b.minorVersion = b.majorVersion == BLOCK_MAJOR_VERSION_2 ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
       }
       else {
@@ -427,47 +434,24 @@ bool core::get_block_template(Block& b, const AccountPublicAddress& adr, difficu
         return false;
       }
     }
-    else if (b.majorVersion == BLOCK_MAJOR_VERSION_3) {
-
-      if (m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_4) == UpgradeDetectorBase::UNDEF_HEIGHT) {
-        b.minorVersion = b.majorVersion == BLOCK_MAJOR_VERSION_3 ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
-      }
-      else {
-        b.minorVersion = BLOCK_MINOR_VERSION_0;
-      }
-
-      b.parentBlock.majorVersion = BLOCK_MAJOR_VERSION_2;
-      b.parentBlock.majorVersion = BLOCK_MINOR_VERSION_0;
-      b.parentBlock.transactionCount = 1;
-      TransactionExtraMergeMiningTag mm_tag = boost::value_initialized<decltype(mm_tag)>();
-
-      if (!appendMergeMiningTagToExtra(b.parentBlock.baseTransaction.extra, mm_tag)) {
-        logger(ERROR, BRIGHT_RED) << "Failed to append merge mining tag to extra of the parent block miner transaction";
-        return false;
-      }
-    }
-    else if (b.majorVersion >= BLOCK_MAJOR_VERSION_4) {
-
-      if (m_currency.upgradeHeight(BLOCK_MAJOR_VERSION_5) == UpgradeDetectorBase::UNDEF_HEIGHT) {
-        b.minorVersion = b.majorVersion == BLOCK_MAJOR_VERSION_4 ? BLOCK_MINOR_VERSION_1 : BLOCK_MINOR_VERSION_0;
-      }
-      else {
-        b.minorVersion = BLOCK_MINOR_VERSION_0;
-      }
-
-      b.parentBlock.majorVersion = BLOCK_MAJOR_VERSION_3;
-      b.parentBlock.majorVersion = BLOCK_MINOR_VERSION_0;
-      b.parentBlock.transactionCount = 1;
-      TransactionExtraMergeMiningTag mm_tag = boost::value_initialized<decltype(mm_tag)>();
-
-      if (!appendMergeMiningTagToExtra(b.parentBlock.baseTransaction.extra, mm_tag)) {
-        logger(ERROR, BRIGHT_RED) << "Failed to append merge mining tag to extra of the parent block miner transaction";
-        return false;
-      }
-    }
 
     b.previousBlockHash = get_tail_id();
     b.timestamp = time(NULL);
+
+    // Don't generate a block template with invalid timestamp
+    // Fix by Jagerman
+    // https://github.com/graft-project/GraftNetwork/pull/118/commits
+
+    if(height >= m_currency.timestampCheckWindow()) {
+      std::vector<uint64_t> timestamps;
+      for(size_t offset = height - m_currency.timestampCheckWindow(); offset < height; ++offset) {
+        timestamps.push_back(m_blockchain.getBlockTimestamp(offset));
+      }
+      uint64_t median_ts = Common::medianValue(timestamps);
+       if (b.timestamp < median_ts) {
+          b.timestamp = median_ts;
+      }
+    }
 
     median_size = m_blockchain.getCurrentCumulativeBlocksizeLimit() / 2;
     already_generated_coins = m_blockchain.getCoinsInCirculation();

@@ -373,7 +373,7 @@ bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RP
   res.white_peerlist_size = m_p2p.getPeerlistManager().get_white_peers_count();
   res.grey_peerlist_size = m_p2p.getPeerlistManager().get_gray_peers_count();
   res.last_known_block_index = std::max(static_cast<uint32_t>(1), m_protocolQuery.getObservedHeight()) - 1;
-  //res.top_block_hash = Common::podToHex(m_core.getBlockIdByHeight(m_core.get_current_blockchain_height() - 1));
+  res.top_block_hash = Common::podToHex(m_core.getBlockIdByHeight(m_core.get_current_blockchain_height() - 1));
   res.version = PROJECT_VERSION_LONG;
   if (m_fee_address.empty()) {
 	  res.fee_address = "";
@@ -586,7 +586,7 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
     block_short.hash = Common::podToHex(block_hash);
     block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
     block_short.tx_count = blk.transactionHashes.size() + 1;
-	block_short.difficulty = blockDiff;
+    block_short.difficulty = blockDiff;
 
     res.blocks.push_back(block_short);
 
@@ -952,7 +952,6 @@ bool RpcServer::on_getblocktemplate(const COMMAND_RPC_GETBLOCKTEMPLATE::request&
   Block b = boost::value_initialized<Block>();
   CryptoNote::BinaryArray blob_reserve;
   blob_reserve.resize(req.reserve_size, 0);
-
   if (!m_core.get_block_template(b, acc, res.difficulty, res.height, blob_reserve)) {
     logger(ERROR) << "Failed to create block template";
     throw JsonRpc::JsonRpcError{ CORE_RPC_ERROR_CODE_INTERNAL_ERROR, "Internal error: failed to create block template" };
@@ -980,7 +979,14 @@ bool RpcServer::on_getblocktemplate(const COMMAND_RPC_GETBLOCKTEMPLATE::request&
     res.reserved_offset = 0;
   }
 
+  BinaryArray hashing_blob;
+  if (!get_block_hashing_blob(b, hashing_blob)) {
+	  logger(ERROR) << "Failed to get blockhashing_blob";
+	  throw JsonRpc::JsonRpcError{ CORE_RPC_ERROR_CODE_INTERNAL_ERROR, "Internal error: failed to get blockhashing_blob" };
+  }
+
   res.blocktemplate_blob = toHex(block_blob);
+  res.blockhashing_blob = toHex(hashing_blob);
   res.status = CORE_RPC_STATUS_OK;
 
   return true;
