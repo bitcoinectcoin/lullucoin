@@ -38,7 +38,7 @@ const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V1         = DIFFICULTY_TARGET
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V1          = 11; 
 
-// MONEY_SUPPLY - total number coins to be generated in atomic units
+// MONEY_SUPPLY - total number of coins to be generated in atomic units
 const uint64_t MONEY_SUPPLY                                  = (uint64_t)(-1);
 const uint64_t TAIL_EMISSION_REWARD                          = 100;
 const size_t CRYPTONOTE_COIN_VERSION                         = 1;

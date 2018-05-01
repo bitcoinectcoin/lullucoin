@@ -1115,7 +1115,7 @@ bool Blockchain::handle_alternative_block(const Block& b, const Crypto::Hash& id
     difficulty_type current_diff = get_next_difficulty_for_alternative_chain(alt_chain, bei);
     if (!(current_diff)) { logger(ERROR, BRIGHT_RED) << "!!!!!!! DIFFICULTY OVERHEAD !!!!!!!"; return false; }
     Crypto::Hash proof_of_work = NULL_HASH;
-	if (!m_currency.checkProofOfWork(bei.bl, current_diff, proof_of_work)) {
+    if (!m_currency.checkProofOfWork(bei.bl, current_diff, proof_of_work)) {
       logger(INFO, BRIGHT_RED) <<
         "Block with id: " << id
         << ENDL << " for alternative chain, have not enough proof of work: " << proof_of_work
