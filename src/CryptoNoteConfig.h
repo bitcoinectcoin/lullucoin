@@ -34,9 +34,11 @@ const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
 const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 0x14820c; // addresses start with "QWC"
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 60;
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = DIFFICULTY_TARGET * 60;
+const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V1         = DIFFICULTY_TARGET * 7; 
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
+const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V1          = 11; 
 
-// MONEY_SUPPLY - total number coins to be generated
+// MONEY_SUPPLY - total number coins to be generated in atomic units
 const uint64_t MONEY_SUPPLY                                  = (uint64_t)(-1);
 const uint64_t TAIL_EMISSION_REWARD                          = 100;
 const size_t CRYPTONOTE_COIN_VERSION                         = 1;
@@ -52,7 +54,8 @@ const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 8;
 const uint64_t MINIMUM_FEE                                   = UINT64_C(100000000); // 1 QWC
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(100000);    // 0.001
-const uint64_t MAX_TX_MIXIN_SIZE                             = 20;
+const uint64_t MAX_TX_MIXIN_SIZE                             = 6;
+const uint64_t MAX_TRANSACTION_SIZE_LIMIT                    = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 / 4 - CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE;
 
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks

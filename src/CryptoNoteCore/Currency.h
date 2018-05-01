@@ -42,7 +42,25 @@ public:
   size_t minedMoneyUnlockWindow() const { return m_minedMoneyUnlockWindow; }
 
   size_t timestampCheckWindow() const { return m_timestampCheckWindow; }
+  size_t timestampCheckWindow(uint8_t blockMajorVersion) const {
+    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
+      return timestampCheckWindow_v1();
+    }
+    else {
+      return timestampCheckWindow();
+    }
+  }
+  size_t timestampCheckWindow_v1() const { return m_timestampCheckWindow_v1; }
   uint64_t blockFutureTimeLimit() const { return m_blockFutureTimeLimit; }
+  uint64_t blockFutureTimeLimit(uint8_t blockMajorVersion) const {
+    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
+      return blockFutureTimeLimit_v1();
+    }
+    else {
+      return blockFutureTimeLimit();
+    }
+  }
+  uint64_t blockFutureTimeLimit_v1() const { return m_blockFutureTimeLimit_v1; }
 
   uint64_t moneySupply() const { return m_moneySupply; }
   unsigned int emissionSpeedFactor() const { return m_emissionSpeedFactor; }
@@ -52,6 +70,10 @@ public:
   size_t blockGrantedFullRewardZone() const { return m_blockGrantedFullRewardZone; }
   size_t blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const;
   size_t minerTxBlobReservedSize() const { return m_minerTxBlobReservedSize; }
+  uint64_t maxTransactionSizeLimit() const { return m_maxTransactionSizeLimit; }
+
+  size_t minMixin() const { return m_minMixin; }
+  size_t maxMixin() const { return m_maxMixin; }
 
   size_t numberOfDecimalPlaces() const { return m_numberOfDecimalPlaces; }
   uint64_t coin() const { return m_coin; }
@@ -160,7 +182,9 @@ private:
   size_t m_minedMoneyUnlockWindow;
 
   size_t m_timestampCheckWindow;
+  size_t m_timestampCheckWindow_v1; 
   uint64_t m_blockFutureTimeLimit;
+  uint64_t m_blockFutureTimeLimit_v1; 
 
   uint64_t m_moneySupply;
   unsigned int m_emissionSpeedFactor;
@@ -169,9 +193,13 @@ private:
   size_t m_rewardBlocksWindow;
   size_t m_blockGrantedFullRewardZone;
   size_t m_minerTxBlobReservedSize;
+  uint64_t m_maxTransactionSizeLimit; 
 
   size_t m_numberOfDecimalPlaces;
   uint64_t m_coin;
+
+  size_t m_minMixin;
+  size_t m_maxMixin;
 
   uint64_t m_mininumFee;
   uint64_t m_defaultDustThreshold;
@@ -240,7 +268,9 @@ public:
   CurrencyBuilder& minedMoneyUnlockWindow(size_t val) { m_currency.m_minedMoneyUnlockWindow = val; return *this; }
 
   CurrencyBuilder& timestampCheckWindow(size_t val) { m_currency.m_timestampCheckWindow = val; return *this; }
+  CurrencyBuilder& timestampCheckWindow_v1(size_t val) { m_currency.m_timestampCheckWindow_v1 = val; return *this; } 
   CurrencyBuilder& blockFutureTimeLimit(uint64_t val) { m_currency.m_blockFutureTimeLimit = val; return *this; }
+  CurrencyBuilder& blockFutureTimeLimit_v1(uint64_t val) { m_currency.m_blockFutureTimeLimit_v1 = val; return *this; } 
 
   CurrencyBuilder& moneySupply(uint64_t val) { m_currency.m_moneySupply = val; return *this; }
   CurrencyBuilder& emissionSpeedFactor(unsigned int val);
@@ -249,6 +279,10 @@ public:
   CurrencyBuilder& rewardBlocksWindow(size_t val) { m_currency.m_rewardBlocksWindow = val; return *this; }
   CurrencyBuilder& blockGrantedFullRewardZone(size_t val) { m_currency.m_blockGrantedFullRewardZone = val; return *this; }
   CurrencyBuilder& minerTxBlobReservedSize(size_t val) { m_currency.m_minerTxBlobReservedSize = val; return *this; }
+  CurrencyBuilder& maxTransactionSizeLimit(uint64_t val) { m_currency.m_maxTransactionSizeLimit = val; return *this; }
+
+  CurrencyBuilder& minMixin(size_t val) { m_currency.m_minMixin = val; return *this; }
+  CurrencyBuilder& maxMixin(size_t val) { m_currency.m_maxMixin = val; return *this; }
 
   CurrencyBuilder& numberOfDecimalPlaces(size_t val);
 
