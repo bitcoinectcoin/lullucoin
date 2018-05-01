@@ -2,7 +2,6 @@
 // Copyright (c) 2014-2016, XDN developers
 // Copyright (c) 2014-2017, The Forknote developers
 // Copyright (c) 2016-2018, Karbo developers
-// Copyright (c) 2018, Qwertycoin developers
 //
 // All rights reserved.
 // 
@@ -1169,8 +1168,8 @@ bool simple_wallet::init(const boost::program_options::variables_map& vm)
 			"Use \"help\" command to see the list of available commands.\n" <<
 			"**********************************************************************";
 
-      if (command_line::has_arg(vm, arg_reset))
-          reset({});
+		if (command_line::has_arg(vm, arg_reset))
+			reset({});
 	}
 
 	return true;
