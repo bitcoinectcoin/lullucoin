@@ -133,14 +133,14 @@ namespace CryptoNote {
 	}
 
 	uint32_t Currency::upgradeHeight(uint8_t majorVersion) const {
-		if (majorVersion == BLOCK_MAJOR_VERSION_2) {
+		if (majorVersion == BLOCK_MAJOR_VERSION_4) {
+			return m_upgradeHeightV4;
+		}
+		else if (majorVersion == BLOCK_MAJOR_VERSION_2) {
 			return m_upgradeHeightV2;
 		}
 		else if (majorVersion == BLOCK_MAJOR_VERSION_3) {
 			return m_upgradeHeightV3;
-		}
-		else if (majorVersion == BLOCK_MAJOR_VERSION_4) {
-			return m_upgradeHeightV4;
 		}
 		else {
 			return static_cast<uint32_t>(-1);
@@ -585,33 +585,28 @@ namespace CryptoNote {
 
 		return next_difficulty;
 	}
-
-	bool Currency::checkProofOfWorkV1(const Block& block, difficulty_type currentDiffic,
+	bool Currency::checkProofOfWorkV1(cn_pow_hash_v2& hash_ctx, const Block& block, difficulty_type currentDiffic, 
 		Crypto::Hash& proofOfWork) const {
-
-		cn_pow_hash_v2 m_pow_ctx;
 
 		if (BLOCK_MAJOR_VERSION_1 != block.majorVersion) {
 			return false;
 		}
 
-		if (!get_block_longhash(m_pow_ctx, block, proofOfWork)) {
+		if (!get_block_longhash(hash_ctx, block, proofOfWork)) {
 			return false;
 		}
 
 		return check_hash(proofOfWork, currentDiffic);
 	}
 
-	bool Currency::checkProofOfWorkV2(const Block& block, difficulty_type currentDiffic,
-		Crypto::Hash& proofOfWork) const {
-
-		cn_pow_hash_v2 m_pow_ctx;
+	bool Currency::checkProofOfWorkV2(cn_pow_hash_v2& hash_ctx, const Block& block, difficulty_type currentDiffic, 
+ 		Crypto::Hash& proofOfWork) const {
 
 		if (block.majorVersion < BLOCK_MAJOR_VERSION_2) {
 			return false;
 		}
 
-		if (!get_block_longhash(m_pow_ctx, block, proofOfWork)) {
+		if (!get_block_longhash(hash_ctx, block, proofOfWork)) {
 			return false;
 		}
 
@@ -646,16 +641,16 @@ namespace CryptoNote {
 		return true;
 	}
 
-	bool Currency::checkProofOfWork(const Block& block, difficulty_type currentDiffic, Crypto::Hash& proofOfWork) const {
+	bool Currency::checkProofOfWork(cn_pow_hash_v2& hash_ctx, const Block& block, difficulty_type currentDiffic, Crypto::Hash& proofOfWork) const { 
 		switch (block.majorVersion) {
 		case BLOCK_MAJOR_VERSION_1:
-			return checkProofOfWorkV1(block, currentDiffic, proofOfWork);
+			return checkProofOfWorkV1(hash_ctx, block, currentDiffic, proofOfWork); 
 
 		case BLOCK_MAJOR_VERSION_2:
 		case BLOCK_MAJOR_VERSION_3:
 		case BLOCK_MAJOR_VERSION_4:
-			return checkProofOfWorkV2(block, currentDiffic, proofOfWork);
-		}
+			return checkProofOfWorkV2(hash_ctx, block, currentDiffic, proofOfWork); 
+ 		}
 
 		logger(ERROR, BRIGHT_RED) << "Unknown block major version: " << block.majorVersion << "." << block.minorVersion;
 		return false;

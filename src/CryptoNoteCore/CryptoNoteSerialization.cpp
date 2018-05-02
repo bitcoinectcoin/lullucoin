@@ -388,9 +388,11 @@ void serializeBlockHeader(BlockHeader& header, ISerializer& serializer) {
     serializer(header.timestamp, "timestamp");
     serializer(header.previousBlockHash, "prev_id");
     serializer.binary(&header.nonce, sizeof(header.nonce), "nonce");
-  } else if (header.majorVersion >= BLOCK_MAJOR_VERSION_2) {
+  }
+  else if (header.majorVersion >= BLOCK_MAJOR_VERSION_2) {
     serializer(header.previousBlockHash, "prev_id");
-  } else {
+  }
+  else {
     throw std::runtime_error("Wrong major version");
   }
 }
