@@ -1087,7 +1087,7 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
   if (!m_blockchain.isInCheckpointZone(get_current_blockchain_height())) {
 
     if (blobSize > m_currency.maxTransactionSizeLimit()) {
-     logger(Logging::INFO) << "Transaction verification failed: too big size " << blobSize << " of transaction " << txHash << ", rejected";
+     logger(DEBUGGING) << "Transaction verification failed: too big size " << blobSize << " of transaction " << txHash << ", rejected";
      tvc.m_verifivation_failed = true;
      return false;
    }
@@ -1098,7 +1098,7 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
 	  }
 
 	  if (!check_tx_mixin(tx)) {
-		  logger(Logging::INFO) << "Transaction verification failed: mixin count for transaction " << txHash << " is too large, rejected";
+		  logger(DEBUGGING) << "Transaction verification failed: mixin count for transaction " << txHash << " is too large, rejected";
 		  tvc.m_verifivation_failed = true;
 		  return false;
 	  }
@@ -1113,9 +1113,9 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
   bool r = add_new_tx(tx, txHash, blobSize, tvc, keptByBlock);
   if (tvc.m_verifivation_failed) {
     if (!tvc.m_tx_fee_too_small) {
-      logger(Logging::ERROR) << "Transaction verification failed: " << txHash;
+      logger(DEBUGGING) << "Transaction verification failed: " << txHash;
     } else {
-      logger(Logging::INFO) << "Transaction verification failed: " << txHash;
+      logger(DEBUGGING) << "Transaction verification failed: " << txHash;
     }
   } else if (tvc.m_verifivation_impossible) {
     logger(ERROR) << "Transaction verification impossible: " << txHash;

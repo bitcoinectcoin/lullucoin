@@ -154,7 +154,7 @@ namespace CryptoNote {
     if (!keptByBlock) {
       std::lock_guard<std::recursive_mutex> lock(m_transactions_lock);
       if (haveSpentInputs(tx)) {
-        logger(Logging::INFO) << "Transaction with id= " << id << " used already spent inputs";
+        logger(Logging::DEBUGGING) << "Transaction with id= " << id << " used already spent inputs";
         tvc.m_verifivation_failed = true;
         return false;
       }
@@ -167,7 +167,7 @@ namespace CryptoNote {
 
     if (!inputsValid) {
       if (!keptByBlock) {
-        logger(INFO) << "tx used wrong inputs, rejected";
+        logger(Logging::DEBUGGING) << "tx used wrong inputs, rejected";
         tvc.m_verifivation_failed = true;
         return false;
       }
@@ -179,7 +179,7 @@ namespace CryptoNote {
     if (!keptByBlock) {
       bool sizeValid = m_validator.checkTransactionSize(blobSize);
       if (!sizeValid) {
-        logger(INFO) << "tx too big, rejected";
+        logger(Logging::DEBUGGING) << "tx too big, rejected";
         tvc.m_verifivation_failed = true;
         return false;
       }
@@ -188,7 +188,7 @@ namespace CryptoNote {
     std::lock_guard<std::recursive_mutex> lock(m_transactions_lock);
 
     if (!keptByBlock && m_recentlyDeletedTransactions.find(id) != m_recentlyDeletedTransactions.end()) {
-      logger(INFO) << "Trying to add recently deleted transaction. Ignore: " << id;
+      logger(Logging::DEBUGGING) << "Trying to add recently deleted transaction. Ignore: " << id;
       tvc.m_verifivation_failed = false;
       tvc.m_should_be_relayed = false;
       tvc.m_added_to_pool = false;
@@ -450,9 +450,9 @@ namespace CryptoNote {
       if (ready && blockTemplate.addTransaction(txd.id, txd.tx)) {
         total_size += txd.blobSize;
         fee += txd.fee;
-        logger(DEBUGGING) << "Transaction " << txd.id << " included to block template";
+        logger(Logging::DEBUGGING) << "Transaction " << txd.id << " included to block template";
       } else {
-        logger(DEBUGGING) << "Transaction " << txd.id << " is failed to include to block template";
+        logger(Logging::DEBUGGING) << "Transaction " << txd.id << " is failed to include to block template";
       }
     }
 
