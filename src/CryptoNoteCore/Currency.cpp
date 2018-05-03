@@ -538,6 +538,7 @@ namespace CryptoNote {
 		// Do not use "if solvetime < 0 then solvetime = 1" which allows a catastrophic exploit.
 		// T= target_solvetime;
 		// N = int(45 * (600 / T) ^ 0.3));
+		// Adapted for Qwertycoin specific setting
 
 		const int64_t T = static_cast<int64_t>(m_difficultyTarget);
 		const size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
