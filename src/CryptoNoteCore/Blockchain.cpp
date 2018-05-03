@@ -395,7 +395,7 @@ bool Blockchain::haveSpentKeyImages(const CryptoNote::Transaction& tx) {
 */
 bool Blockchain::checkTransactionSize(size_t blobSize) {
   if (blobSize > getCurrentCumulativeBlocksizeLimit() - m_currency.minerTxBlobReservedSize()) {
-    logger(ERROR) << "transaction is too big " << blobSize << ", maximum allowed size is " <<
+    logger(Logging::DEBUGGING) << "transaction is too big " << blobSize << ", maximum allowed size is " <<
       (getCurrentCumulativeBlocksizeLimit() - m_currency.minerTxBlobReservedSize());
     return false;
   }
