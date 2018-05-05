@@ -437,7 +437,7 @@ bool core::get_block_template(Block& b, const AccountPublicAddress& adr, difficu
         logger(ERROR, BRIGHT_RED) << "Failed to append merge mining tag to extra of the parent block miner transaction";
         return false;
       }
-}
+    }
 
     b.previousBlockHash = get_tail_id();
     b.timestamp = time(NULL);
