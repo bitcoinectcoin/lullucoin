@@ -41,6 +41,8 @@ using namespace Logging;
 
 using namespace  Common;
 
+#define BLOCK_HEIGHT_TX_MIN_FEE_MAX_MIXIN_VERIFICATION 60000
+
 namespace CryptoNote {
 
 class BlockWithTransactions : public IBlock {
@@ -1093,7 +1095,8 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
   }
 
   // is in checkpoint zone
-  if (!m_blockchain.isInCheckpointZone(get_current_blockchain_height())) {
+  //if (!m_blockchain.isInCheckpointZone(get_current_blockchain_height())) {
+  if (get_current_blockchain_height() > BLOCK_HEIGHT_TX_MIN_FEE_MAX_MIXIN_VERIFICATION) {
 
     if (blobSize > m_currency.maxTransactionSizeLimit()) {
      logger(DEBUGGING) << "Transaction verification failed: too big size " << blobSize << " of transaction " << txHash << ", rejected";
