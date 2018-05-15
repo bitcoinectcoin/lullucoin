@@ -82,7 +82,9 @@ const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 
 const uint32_t UPGRADE_HEIGHT_V2                             = 40000;
 const uint32_t UPGRADE_HEIGHT_V3                             = 46000;
-const uint32_t UPGRADE_HEIGHT_V4                             = 4294967294;
+const uint32_t UPGRADE_HEIGHT_V4                             = 4294967292;
+const uint32_t UPGRADE_HEIGHT_V5                             = 4294967293;
+const uint32_t UPGRADE_HEIGHT_V6                             = 4294967294;
 
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -103,10 +105,14 @@ const char     CRYPTONOTE_NAME[]                             = "qwertycoin";
 const char     GENESIS_COINBASE_TX_HEX[]                     = "013c01ff0001ffffffffffff07029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101eddf1e272c1ffa70f49ca4eaad918578bc3b59689e53e48a1bc670fbdea08478";
 
 const uint8_t  CURRENT_TRANSACTION_VERSION                   =  1;
+
 const uint8_t  BLOCK_MAJOR_VERSION_1                         =  1;
 const uint8_t  BLOCK_MAJOR_VERSION_2                         =  2;
 const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MAJOR_VERSION_4                         =  4;
+const uint8_t  BLOCK_MAJOR_VERSION_5                         =  5;
+const uint8_t  BLOCK_MAJOR_VERSION_6                         =  6;
+
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 
@@ -138,10 +144,6 @@ const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (5 * 60);      //
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "37ceebc436f3004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
 
 const char* const SEED_NODES[] = { 
-  /* TESTNET SERVERS
-  "46.38.242.66:8196",
-  "95.216.136.59:8196",
-  "95.216.139.56:8196" */
   "node-00.qwertycoin.org:8196",//00
   "195.201.25.118:8196",        //01
   "198.147.30.116:8196",        //explorer
@@ -176,7 +178,7 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
   {60000,"796e0037bed22ec317dc165bdfcc331322fe3fcc7ca162827ab374a7d17107f0"},
   {65000,"d03c367bc1d87bea553346245ae60865175371b449dea11b79b7cfa28453d892"},
   {70000,"9b035668d72b17ceaabbd4b341089f090aa5ebad37f33513509d9f6e102c7c0c"},
-  {71888,"f8235730fc84764f884f8f48bde4b8d6323dc4c16abfaab458b8acbb41a87a02"}
+  {72446,"c4bf1cfc520e804a87a092c378faa0668de6f937d3b308237f5589899a7fe456"}
 };
 
 } // CryptoNote
