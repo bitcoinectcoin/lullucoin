@@ -37,7 +37,6 @@ const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V1         = DIFFICULTY_TARGET
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V1          = 11; 
 
-// MONEY_SUPPLY - total number of coins to be generated in atomic units
 const uint64_t MONEY_SUPPLY                                  = (uint64_t)(-1);
 const uint64_t TAIL_EMISSION_REWARD                          = 100;
 const size_t CRYPTONOTE_COIN_VERSION                         = 1;
@@ -53,7 +52,7 @@ const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 8;
 const uint64_t MINIMUM_FEE                                   = UINT64_C(100000000); // 1 QWC
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(100000);    // 0.001
-const uint64_t MIN_TX_MIXIN_SIZE                             = 2;
+const uint64_t MIN_TX_MIXIN_SIZE                             = 1;
 const uint64_t MAX_TX_MIXIN_SIZE							               = 20;
 const uint64_t MAX_TRANSACTION_SIZE_LIMIT                    = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 / 4 - CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE;
 
