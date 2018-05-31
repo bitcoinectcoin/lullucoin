@@ -762,7 +762,7 @@ bool core::on_idle() {
     logger(INFO) << ENDL << "**********************************************************************" << ENDL
       << "The daemon will start synchronizing with the qwertycoin network. It may take up to several hours." << ENDL
       << "You can fasten this process by downloading a snapshot here: \"https://blockchain.qwertycoin.org\" " << ENDL
-      << "How to setup a blockchain from the site? Read here: \"https://blockchain.qwertycoin.org/readme.txt\" " << ENDL
+      << "How to setup a blockchain file? Read here: \"https://blockchain.qwertycoin.org/readme.txt\" " << ENDL
       << ENDL
       << "You can set the level of process detailization* through \"set_log <level>\" command*, where <level> is between 0 (no details) and 4 (very verbose)." << ENDL
       << ENDL
