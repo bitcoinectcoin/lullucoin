@@ -12,14 +12,14 @@ matrix:
             - ubuntu-toolchain-r-test
             packages:
             - g++-4.9
-            - libboost1.55-all-dev
+            - libboost1.60-all-dev
       env:
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9
+      - MATRIX_EVAL="CC=gcc-7.0.1 && CXX=g++-7.0.1
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew upgrade autoconf automake berkeley-db4 libtool miniupnpc openssl protobuf; fi
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install build-essential python-dev gcc-4.9 g++-4.9 cmake libboost1.55-all-dev -y; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install build-essential python-dev gcc-7.0.1 g++-4.9 cmake libboost1.55-all-dev -y; fi
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=clang CXX=clang++; fi
 
 script:
