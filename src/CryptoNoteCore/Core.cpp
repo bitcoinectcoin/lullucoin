@@ -1128,7 +1128,7 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
     } else {
       logger(DEBUGGING) << "Transaction verification failed: " << txHash;
     }
-  } else if (tvc.m_verifivation_impossible) {
+  } else if (tvc.m_verification_impossible) {
     logger(ERROR) << "Transaction verification impossible: " << txHash;
   }
 

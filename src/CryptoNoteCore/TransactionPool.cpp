@@ -173,7 +173,7 @@ namespace CryptoNote {
       }
 
       maxUsedBlock.clear();
-      tvc.m_verifivation_impossible = true;
+      tvc.m_verification_impossible = true;
     }
 
     if (!keptByBlock) {

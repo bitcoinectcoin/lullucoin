@@ -482,7 +482,7 @@ TEST_F(tx_pool, RecentlyDeletedTransactionCannotBeAddedToTxPoolAgain) {
   ASSERT_FALSE(tvc.m_added_to_pool);
   ASSERT_FALSE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(0, pool.get_transactions_count());
 }
@@ -513,7 +513,7 @@ TEST_F(tx_pool, RecentlyDeletedTransactionCanBeAddedAgainAfterSomeTime) {
   ASSERT_TRUE(tvc.m_added_to_pool);
   ASSERT_TRUE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(1, pool.get_transactions_count());
 }
@@ -540,7 +540,7 @@ TEST_F(tx_pool, RecentlyDeletedTransactionCanBeAddedToTxPoolIfItIsReceivedInBloc
   ASSERT_TRUE(tvc.m_added_to_pool);
   ASSERT_TRUE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(1, pool.get_transactions_count());
 }
@@ -605,7 +605,7 @@ TEST_F(tx_pool, TransactionThatWasDeletedLongAgoIsForgottenDuringTxPoolInitializ
   ASSERT_TRUE(tvc.m_added_to_pool);
   ASSERT_TRUE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(1, pool->get_transactions_count());
 }
@@ -643,7 +643,7 @@ TEST_F(tx_pool, RecentlyDeletedTxInfoIsSerializedAndDeserialized) {
   ASSERT_FALSE(tvc.m_added_to_pool);
   ASSERT_FALSE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(0, pool->get_transactions_count());
 
@@ -655,7 +655,7 @@ TEST_F(tx_pool, RecentlyDeletedTxInfoIsSerializedAndDeserialized) {
   ASSERT_TRUE(tvc.m_added_to_pool);
   ASSERT_TRUE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 
   ASSERT_EQ(1, pool->get_transactions_count());
 }
@@ -674,7 +674,7 @@ TEST_F(tx_pool, TxPoolAcceptsValidFusionTransaction) {
   ASSERT_TRUE(tvc.m_added_to_pool);
   ASSERT_TRUE(tvc.m_should_be_relayed);
   ASSERT_FALSE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 }
 
 TEST_F(tx_pool, TxPoolDoesNotAcceptInvalidFusionTransaction) {
@@ -692,7 +692,7 @@ TEST_F(tx_pool, TxPoolDoesNotAcceptInvalidFusionTransaction) {
   ASSERT_FALSE(tvc.m_added_to_pool);
   ASSERT_FALSE(tvc.m_should_be_relayed);
   ASSERT_TRUE(tvc.m_verification_failed);
-  ASSERT_FALSE(tvc.m_verifivation_impossible);
+  ASSERT_FALSE(tvc.m_verification_impossible);
 }
 
 namespace {
