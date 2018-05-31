@@ -140,18 +140,13 @@ const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (5 * 60);      //
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "37ceebc436f3004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
 
 const char* const SEED_NODES[] = { 
-  /* TESTNET SERVERS
-  "46.38.242.66:8196",
-  "95.216.136.59:8196",
-  "95.216.139.56:8196" */
-  "node-00.qwertycoin.org:8196",//00
-  "195.201.25.118:8196",        //01
-  "198.147.30.116:8196",        //explorer
-  "198.147.30.115:8196",        //mp
-  "node-02.qwertycoin.org:8196",//02
-  "78.47.85.215:8196",          //03
-  "46.38.242.66:8196",          //op
-  "195.201.27.148:8196"         //05
+  "node-00.qwertycoin.org:8196",//00P
+  "195.201.25.118:8196",        //01P
+  "198.147.30.116:8196",        //EXP
+  "198.147.30.115:8196",        //POO
+  "node-02.qwertycoin.org:8196",//02A
+  "78.47.85.215:8196",          //03A
+  "78.47.87.215:8196",          //04A
 };
 
 struct CheckpointData {
@@ -179,7 +174,8 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
   {65000,"d03c367bc1d87bea553346245ae60865175371b449dea11b79b7cfa28453d892"},
   {70000,"9b035668d72b17ceaabbd4b341089f090aa5ebad37f33513509d9f6e102c7c0c"},
   {75000,"dfe99ff9e3eaa55fd24797cd2639e156e5222a10a0c14f690f4007cbe6ce3477"},
-  {78668,"2812d02aba6a2300074e6ddf39f07ec65defeaad28d6b71c46dd4b41f270a207"}
+  {80000,"02bdbd6cab951c0685796598b353524d450f947c58d8e1a8efbc05c334663ad7"},
+  {83590,"a483f182bda2bd51f02c3954a16fcefba5aeee60ef16061fe104b1c7a70894b0"}
 };
 
 } // CryptoNote
