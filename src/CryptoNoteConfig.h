@@ -100,9 +100,9 @@ const char     CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME[]      = "blockchainindice
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const char     CRYPTONOTE_NAME[]                              = "qwertycoin";
-const char     GENESIS_COINBASE_TX_HEX[]                      = "013c01ff0001ffffffffffff07029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101eddf1e272c1ffa70f49ca4eaad918578bc3b59689e53e48a1bc670fbdea08478";
-const char     GENESIS_COINBASE_TX_FIX[]                      = "013c01ff0001ffffffffffff07029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101eddf1e272c1ffa70f49ca4eaad918578bc3b59689e53e48a1bc670fbdea08478.3.0";
+const char     CRYPTONOTE_NAME[]                              = "lullucoin";
+const char     GENESIS_COINBASE_TX_HEX[]                      = "";
+const char     GENESIS_COINBASE_TX_FIX[]                      = "";
 
 const uint8_t  CURRENT_TRANSACTION_VERSION                   =  1;
 const uint8_t  BLOCK_MAJOR_VERSION_1                         =  1;
@@ -140,18 +140,9 @@ const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (5 * 60);      //
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "deadbeafbeef004d3739499c67ccb730cc4734950f414cdb332b24c5ce764317";
 
 const char* const SEED_NODES[] = { 
-  "node-00.qwertycoin.org:8196",//00P
-  "195.201.25.118:8196",        //01P
-  "198.147.30.116:8196",        //EXP
-  "198.147.30.115:8196",        //POO
-  "node-02.qwertycoin.org:8196",//02A
-  "78.47.85.215:8196",          //03A
-  "78.47.87.215:8196",          //04A
-  "139.99.192.106:8196",        //JOR
-  /* Community Nodes */
-  "92.63.106.237:8196",
-  "220.82.126.94:8196"
-};
+  "186.216.215.118:8091",
+  "192.168.7.253:8091",  
+
 
 } // CryptoNote
 
